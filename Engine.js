@@ -1,8 +1,11 @@
 import { validate, typedef } from "bycontract";
 import promptsync from 'prompt-sync';
 
-import { Sala, Mochila, Objeto, Ferramenta } from './Basicas.js';
-import { CilindroOxigenio } from './Ferramentas.js';
+import { Sala } from "./Base/Sala.js";
+import { Mochila } from "./Base/Mochila.js";
+import { Ferramenta } from "./Base/Ferramenta.js";
+
+import { CilindroOxigenio } from './Ferramentas/CilindroOxigenio.js';
 
 const prompt = promptsync({ sigint: true });
 
@@ -102,7 +105,7 @@ class Engine {
                     const ferramentaParaUsar = this.#mochila.pega(argumento);
 
                     if (ferramentaParaUsar instanceof CilindroOxigenio) {
-                        this.confereCilindro(ferramentaParaUsar);
+                        this.#confereCilindro(ferramentaParaUsar);
                     }
 
                     if (ferramentaParaUsar) {
@@ -110,7 +113,6 @@ class Engine {
                             const objetoDestino = this.#salaCorrente.objetos.get(argumento2);
                             if (objetoDestino) {
                                 const usoBemSucedido = objetoDestino.usar(ferramentaParaUsar);
-                                console.log(usoBemSucedido); // Remover este log
 
                                 // Verifica condições de vitória APÓS o uso ter sido tentado
                                 if (usoBemSucedido && ferramentaParaUsar.nome === 'star-tracker' && objetoDestino.nome === 'nave') {
@@ -137,15 +139,7 @@ class Engine {
                     console.log("Na sua mochila: " + this.#mochila.inventario());
                     break;
                 case "ajuda":
-                    console.log(`\n${c.bgBlueBright(`------------AJUDA-------------`)}`);
-                    console.log(`\nO objetivo do jogo é consertar sua nave e voltar para casa, para isso você precisa encontrar o ${c.green.italic.inverse(` Star Tracker `)} que está escondido em algum lugar da base.`);
-                    console.log(`\n${c.italic(`Cuidado com os cilindros de oxigênio contaminados! Se você usar um cilindro contaminado, o jogo acaba imediatamente!`)}`);
-                    console.log(`\nComandos:\nir [direcao] ${c.yellow.italic(`(ex: ir norte, sul, leste, oeste)`)}`);
-                    console.log(`pegar [item] ${c.green.italic(`(ex: pegar cilindro)`)}`);
-                    console.log(`usar [item] [objeto] ${c.cyan.italic(`(ex: usar cilindro hangar)`)}`);
-                    console.log(`inventario ${c.blue.italic(`(lista os itens na sua mochila)`)}`);
-                    console.log(`sair ${c.red.italic(`(Finaliza o jogo)`)}`);
-                    console.log(`\n${c.bgBlueBright(`------------AJUDA-------------`)}`);
+                    this.#exibeAjuda();
                     break;
                 case "sair":
                 case "fim":
@@ -157,13 +151,22 @@ class Engine {
         }
     }
 
-    confereCilindro(cilindro) {
+    #exibeAjuda() {
+        console.log(`\n${c.bgBlueBright(`------------AJUDA-------------`)}`);
+        console.log(`\nO objetivo do jogo é consertar sua nave e voltar para casa, para isso você precisa encontrar o ${c.green.italic.inverse(` Star Tracker `)} que está escondido em algum lugar da base.`);
+        console.log(`\n${c.italic(`Cuidado com os cilindros de oxigênio contaminados! Se você usar um cilindro contaminado, o jogo acaba imediatamente!`)}`);
+        console.log(`\nComandos:\nir [direcao] ${c.yellow.italic(`(ex: ir norte, sul, leste, oeste)`)}`);
+        console.log(`pegar [item] ${c.green.italic(`(ex: pegar cilindro)`)}`);
+        console.log(`usar [item] [objeto] ${c.cyan.italic(`(ex: usar cilindro hangar)`)}`);
+        console.log(`inventario ${c.blue.italic(`(lista os itens na sua mochila)`)}`);
+        console.log(`sair ou fim ${c.red.italic(`(Finalizam o jogo)`)}`);
+        console.log(`\n${c.bgBlueBright(`------------AJUDA-------------`)}`);
+    }
+
+    #confereCilindro(cilindro) {
         validate(cilindro, "Ferramenta");
         if (cilindro.usar()) {
             console.log("\n")
-
-
-
             console.log(c.bgRed("☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  "));
             console.log(c.bgRed(`${c.bold.black("Infelizmente, você usou o cilindro contaminado e perdeu o jogo!")}`));
             console.log(c.bgRed("☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  ☠️  "));
