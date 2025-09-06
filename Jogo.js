@@ -1,4 +1,4 @@
-import { Engine, Sala, Mochila, Objeto, Ferramenta } from './Basicas.js';
+import { Engine } from './Engine.js';
 import { CilindroOxigenio, Chave1, Chave2, StarTracker, CartaoAcesso, CaboEnergia, LaserCutter, KitFerramentas, Lanterna } from './Ferramentas.js';
 import { Nave, ArmarioTrancado, ArmarioDestrancado, CaixaLacrada, Computador, TerminalReator, Estufa, LeitoEnfermaria } from './Objetos.js';
 import { Hangar, LaboratorioPesquisa, EstufaHidroponica, Dormitorios, SalaDeControle, Armazem, Enfermaria, ReatorPrincipal, CamaraDeSuprimentos } from './Salas.js';
@@ -54,10 +54,11 @@ class Jogo extends Engine {
 
         // Coloca ferramentas e objetos nas salas
         hangar.addObjeto(new Nave('nave', 'Sua nave danificada. Você precisa do Star Tracker para repará-la.', this));
-        hangar.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
+        hangar.addFerramenta(new CilindroOxigenio('cilindro-1', 'Um cilindro de oxigênio.', false));
+        hangar.addFerramenta(new CilindroOxigenio('cilindro-2', 'Um cilindro de oxigênio.', true));
 
         armazem.addObjeto(new CaixaLacrada('caixa-lacrada', 'Uma caixa de suprimentos lacrada.', this));
-        armazem.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
+        // armazem.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
 
         salaDeControle.addObjeto(new ArmarioTrancado('armario-trancado', 'Um armário trancado que contém o Star Tracker.', this));
         salaDeControle.addFerramenta(new Lanterna('lanterna', 'Uma lanterna com 3 usos.'));
@@ -69,7 +70,7 @@ class Jogo extends Engine {
 
         dormitorios.addFerramenta(new KitFerramentas('kit-de-ferramentas', 'Um kit de ferramentas para abrir armários.'));
         dormitorios.addObjeto(new ArmarioDestrancado('armario', 'Um armário destrancado. Está vazio.', this));
-        dormitorios.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
+        // dormitorios.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
         
         enfermaria.addFerramenta(new CaboEnergia('cabo-de-energia', 'Um cabo de energia para o Reator.'));
         enfermaria.addObjeto(new LeitoEnfermaria('leito', 'Um leito de enfermaria.', this));
@@ -77,7 +78,7 @@ class Jogo extends Engine {
         reator.addFerramenta(new LaserCutter('laser-cutter', 'Um cortador a laser com 3 usos.'));
         reator.addObjeto(new TerminalReator('terminal', 'O terminal do reator principal.', this));
         
-        camara.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', true));
+        // camara.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', true));
 
         // Coloca ferramentas em objetos
         const chave1 = new Chave1('chave-1', 'Chave para a porta Laboratório -> Dormitórios.');
@@ -89,8 +90,8 @@ class Jogo extends Engine {
         const chave2 = new Chave2('chave-2', 'Chave para a porta Reator -> Estufa.');
         armazem.objetos.get('caixa-lacrada').addFerramenta(chave2);
         
-        const cilindroEscondido = new CilindroOxigenio('cilindro-escondido', 'Um cilindro de oxigênio.', false);
-        estufa.objetos.get('estufa').addFerramenta(cilindroEscondido);
+        // const cilindroEscondido = new CilindroOxigenio('cilindro-escondido', 'Um cilindro de oxigênio.', false);
+        // estufa.objetos.get('estufa').addFerramenta(cilindroEscondido);
 
         this.setSalaCorrente(hangar);
     }

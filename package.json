@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ansi-colors": "^4.1.3",
     "bycontract": "^2.0.11",
+    "figlet": "^1.8.2",
     "prompt-sync": "^4.2.0"
   }
 }

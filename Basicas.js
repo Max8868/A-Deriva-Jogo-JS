@@ -1,6 +1,5 @@
 import { validate, typedef } from "bycontract";
 import promptsync from 'prompt-sync';
-const prompt = promptsync({ sigint: true });
 
 // ---------------------------------------------
 /**
@@ -107,6 +106,16 @@ class Mochila {
     inventario() {
         return this.#ferramentas.map(obj => obj.nome).join(", ");
     }
+
+    /**
+     * @method remove
+     * @description Remove uma ferramenta da lista de ferramentas pelo nome.
+     * @param {string} nomeFerramenta - O nome da ferramenta a ser removida.
+     */
+    remove(ferramenta) {
+        validate(ferramenta, "Ferramenta");
+        this.#ferramentas = this.#ferramentas.filter(f => f.nome !== ferramenta.nome);
+    }
 }
 
 // ---------------------------------------------
@@ -204,6 +213,7 @@ class Objeto {
  * @class Sala
  * @description Representa um local no jogo com portas, ferramentas e objetos.
  */
+
 class Sala {
     #nome;
     #descricao;
@@ -280,7 +290,6 @@ class Sala {
      * @description Exibe a descrição da sala no console.
      */
     mostraDescricao() {
-        console.log(`Você está em ${this.#nome}.`);
         console.log(this.textoDescricao());
     }
 
@@ -397,238 +406,25 @@ class Sala {
         return false;
     }
 }
-
 // ---------------------------------------------
-/**
- * @class Engine
- * @description A classe principal que gerencia a lógica do jogo, estado e loop de jogo.
- */
-class Engine {
-    #salaCorrente;
-    #mochila;
-    #ferramentasNoCenario;
-    #fim;
 
-    /**
-     * @constructor
-     * @description Inicializa a engine, criando a mochila, o cenário e iniciando o loop do jogo.
-     */
-    constructor() {
-        this.#mochila = new Mochila();
-        this.#ferramentasNoCenario = new Map();
-        this.#fim = false;
-        this.criaCenario();
-        this.joga();
-    }
 
-    /**
-     * @method setSalaCorrente
-     * @description Define a sala atual do jogador.
-     * @param {Sala} sala - A nova sala corrente.
-     */
-    setSalaCorrente(sala) {
-        validate(sala, "Sala");
-        this.#salaCorrente = sala;
-    }
 
-    /**
-     * @method addFerramentaParaCenario
-     * @description Adiciona uma ferramenta ao mapa de ferramentas do cenário.
-     * @param {Ferramenta} ferramenta - A ferramenta a ser adicionada.
-     */
-    addFerramentaParaCenario(ferramenta) {
-        validate(ferramenta, "Ferramenta");
-        this.#ferramentasNoCenario.set(ferramenta.nome, ferramenta);
-    }
 
-    /**
-     * @method criaCenario
-     * @description Método virtual que deve ser implementado pelas subclasses para criar o mundo do jogo.
-     */
-    criaCenario() {
-        const { ArmarioTrancado, ArmarioDestrancado, CaixaLacrada, Computador, TerminalReator, Estufa, LeitoEnfermaria, Nave } = require('./Objetos.js');
-        const { CilindroOxigenio, StarTracker, Lanterna, CaboEnergia, LaserCutter, KitFerramentas, Chave1, Chave2, CartaoAcesso } = require('./Ferramentas.js');
 
-        const hangar = new Sala("Hangar", this);
-        hangar.setDescricao("Você está no Hangar. O ponto de início da sua jornada.");
-        const laboratorio = new Sala("Laboratório de Pesquisa", this);
-        laboratorio.setDescricao("Você está no Laboratório de Pesquisa. Há um computador aqui.");
-        const salaControle = new Sala("Sala de Controle", this);
-        salaControle.setDescricao("Você está na Sala de Controle. O Star Tracker está em um armário trancado.");
-        const enfermaria = new Sala("Enfermaria", this);
-        enfermaria.setDescricao("Você está na Enfermaria. Há leitos e equipamentos médicos por toda a sala.");
-        const estufa = new Sala("Estufa Hidropônica", this);
-        estufa.setDescricao("Você está na Estufa Hidropônica. Plantas brilham com uma luz fraca.");
-        const deposito = new Sala("Depósito", this);
-        deposito.setDescricao("Você está no Depósito. Pilhas de caixas e equipamentos.");
-        const dormitorio = new Sala("Dormitórios", this);
-        dormitorio.setDescricao("Você está nos Dormitórios. Cheira a mofo e a ar viciado.");
-        const camaraSuprimentos = new Sala("Câmara de Suprimentos", this);
-        camaraSuprimentos.setDescricao("Você está na Câmara de Suprimentos.");
-        const armazem = new Sala("Armazém", this);
-        armazem.setDescricao("Você está no Armazém. Há uma caixa lacrada.");
-        const salaReator = new Sala("Sala do Reator", this);
-        salaReator.setDescricao("Você está na Sala do Reator. O cheiro de ozônio é forte aqui.");
 
-        hangar.criaPorta("norte", laboratorio, false);
-        hangar.criaPorta("leste", dormitorio, false);
-        laboratorio.criaPorta("norte", salaControle, false);
-        laboratorio.criaPorta("leste", estufa, false);
-        laboratorio.criaPorta("sul", hangar, false);
-        salaControle.criaPorta("sul", laboratorio, false);
-        salaControle.criaPorta("leste", armazem, false);
-        estufa.criaPorta("sul", laboratorio, false);
-        estufa.criaPorta("oeste", deposito, false);
-        estufa.criaPorta("norte", camaraSuprimentos, false);
-        deposito.criaPorta("leste", estufa, false);
-        deposito.criaPorta("oeste", enfermaria, false);
-        enfermaria.criaPorta("leste", deposito, false);
-        dormitorio.criaPorta("oeste", hangar, false);
-        dormitorio.criaPorta("leste", camaraSuprimentos, true);
-        camaraSuprimentos.criaPorta("sul", estufa, false);
-        camaraSuprimentos.criaPorta("oeste", dormitorio, true);
-        armazem.criaPorta("oeste", salaControle, false);
-        armazem.criaPorta("norte", estufa, false);
-        armazem.criaPorta("sul", salaReator, false);
-        salaReator.criaPorta("norte", armazem, false);
 
-        const cilindro = new CilindroOxigenio("cilindro", "Um cilindro de oxigênio.");
-        const starTracker = new StarTracker("star-tracker", "O Star Tracker, necessário para consertar a nave.");
-        const lanterna = new Lanterna("lanterna", "Uma lanterna comum.");
-        const caboEnergia = new CaboEnergia("cabo-de-energia", "Um cabo de energia.");
-        const laserCutter = new LaserCutter("laser-cutter", "Um cortador a laser.");
-        const kitFerramentas = new KitFerramentas("kit-de-ferramentas", "Um kit de ferramentas.");
-        const chave1 = new Chave1("chave-1", "Uma chave estranha com o número 1.");
-        const chave2 = new Chave2("chave-2", "Uma chave estranha com o número 2.");
-        const cartaoAcesso = new CartaoAcesso("cartao-de-acesso", "Um cartão de acesso.");
 
-        const nave = new Nave("nave", "Sua nave, à deriva no espaço. Está precisando de reparos.", this);
-        const armarioTrancado = new ArmarioTrancado("armario-trancado", "Um armário com uma tranca eletrônica.", this);
-        armarioTrancado.addFerramenta(chave1);
-        armarioTrancado.addFerramenta(starTracker);
-        const computador = new Computador("computador", "Um computador antigo, precisa de um cartão de acesso.", this);
-        const caixaLacrada = new CaixaLacrada("caixa-lacrada", "Uma caixa lacrada, precisa de um cortador a laser.", this);
-        caixaLacrada.addFerramenta(chave2);
 
-        hangar.addFerramenta(cilindro);
-        hangar.addObjeto(nave);
-        laboratorio.addFerramenta(cartaoAcesso);
-        laboratorio.addObjeto(computador);
-        salaControle.addFerramenta(lanterna);
-        salaControle.addObjeto(armarioTrancado);
-        armazem.addObjeto(caixaLacrada);
 
-        this.setSalaCorrente(hangar);
-    }
 
-    /**
-     * @method joga
-     * @description Inicia o loop principal do jogo, processando as entradas do jogador.
-     */
-    joga() {
-        console.log("Bem-vindo(a) ao jogo A Deriva!");
-        console.log("Digite 'ajuda' para ver os comandos.");
 
-        while (!this.#fim) {
-            console.log("\n-------------------------");
-            this.#salaCorrente.mostraDescricao();
-            this.#salaCorrente.mostraPortas();
-            this.#salaCorrente.mostraFerramentas();
-            this.#salaCorrente.mostraObjetos();
-            console.log("\n-------------------------");
-            const acao = prompt("O que você deseja fazer? ").toLowerCase().split(" ");
-
-            const comando = acao[0];
-            const argumento = acao[1];
-            const argumento2 = acao[2];
-
-            switch (comando) {
-                case "ir":
-                    this.#salaCorrente.sai(argumento);
-                    break;
-                case "pegar":
-                    const ferramenta = this.#salaCorrente.pega(argumento);
-                    if (ferramenta) {
-                        this.#mochila.guarda(ferramenta);
-                        console.log(`Você pegou ${ferramenta.nome} e guardou na mochila.`);
-                    } else {
-                        console.log("Isso não pode ser pego aqui.");
-                    }
-                    break;
-                case "usar":
-                    const ferramentaParaUsar = this.#mochila.pega(argumento);
-                    if (ferramentaParaUsar) {
-                        if (argumento2) { // Verifica se um objeto foi especificado para usar a ferramenta
-                            const objetoDestino = this.#salaCorrente.objetos.get(argumento2);
-                            if (objetoDestino) {
-                                const usoBemSucedido = objetoDestino.usar(ferramentaParaUsar);
-                                console.log(usoBemSucedido); // Remover este log
-
-                                // Verifica condições de vitória APÓS o uso ter sido tentado
-                                if (usoBemSucedido && ferramentaParaUsar.nome === 'star-tracker' && objetoDestino.nome === 'nave') {
-                                    console.log("\n*************************");
-                                    console.log("\nVocê conseguiu! Sua nave foi consertada, agora com os Star Tracker você pode voltar para casa!");
-                                    this.indicaFimDeJogo();
-                                    console.log("\n*************************");
-                                }
-
-                            } else {
-                                console.log("Não há esse objeto aqui para usar a ferramenta.");
-                            }
-                        } else { // Se nenhum objeto foi especificado, tenta usar a ferramenta por si só
-                            const sucessoFerramenta = ferramentaParaUsar.usar();
-                            if (sucessoFerramenta) {
-                                // Adicione aqui lógica caso a ferramenta usada sozinha tenha um efeito especial
-                                // Por exemplo, se usar 'lanterna' sozinha ligasse a lanterna
-                            }
-                        }
-                    } else {
-                        console.log("Você não tem essa ferramenta na mochila.");
-                    }
-                    break;
-                case "inventario":
-                    console.log("Na sua mochila: " + this.#mochila.inventario());
-                    break;
-                case "ajuda":
-                    console.log("Comandos: ir [direcao], pegar [item], usar [item] [objeto], inventario, sair");
-                    break;
-                case "sair":
-                case "fim":
-                    this.indicaFimDeJogo();
-                    break;
-                default:
-                    console.log("Comando inválido.");
-            }
-        }
-    }
-
-    /**
-     * @method indicaFimDeJogo
-     * @description Define a flag de fim de jogo para encerrar o loop principal.
-     */
-    indicaFimDeJogo() {
-        this.#fim = true;
-        console.log("Fim de jogo.");
-    }
-
-    /**
-     * @method mochila
-     * @description Retorna a referência à mochila do jogador.
-     * @returns {Mochila} A mochila do jogador.
-     */
-    get mochila() {
-        return this.#mochila;
-    }
-}
-
-// ---------------------------------------------
 // Definições de tipos (Typedefs)
 typedef("Ferramenta", Ferramenta);
 typedef("Mochila", Mochila);
 typedef("Objeto", Objeto);
 typedef("Sala", Sala);
-typedef("Engine", Engine);
 
 // ---------------------------------------------
 // Exportações das classes
-export { Ferramenta, Mochila, Objeto, Sala, Engine };
+export { Ferramenta, Mochila, Objeto, Sala };

@@ -7,24 +7,26 @@ import { Ferramenta } from "./Basicas.js";
  * @augments Ferramenta
  */
 class CilindroOxigenio extends Ferramenta {
+    #contaminado;
     /**
      * @constructor
      * @param {string} nome - O nome da ferramenta.
      * @param {string} descricao - A descrição da ferramenta.
+     * @param {boolean} contaminado - Registra se o cilindro está contaminado ou não.
      */
-    constructor(nome, descricao) {
-        validate(arguments, ["String", "String"]);
+    constructor(nome, descricao, contaminado) {
+        validate(arguments, ["String", "String", "Boolean"]);
         super(nome, descricao);
+        this.#contaminado = contaminado;
     }
-    
+
     /**
      * @method usar
      * @description Sobrescreve o método usar para mostrar uma mensagem específica.
-     * @returns {boolean} Sempre retorna true.
+     * @returns {boolean} Retorna se o cilindro está contaminado ou não.
      */
     usar() {
-        console.log("Você usou o cilindro de oxigênio e encheu seu traje. Você pode respirar novamente.");
-        return true;
+        return this.#contaminado;
     }
 }
 
