@@ -142,9 +142,26 @@ class Computador extends Objeto {
         validate(ferramenta, "Ferramenta");
         if (ferramenta.nome === 'cartao-de-acesso') {
             console.log("Você usou o cartão de acesso para ligar o computador.");
-            const chave1 = this.pegaFerramenta('chave-1');
-            this.engine.mochila.guarda(chave1);
-            return true;
+            
+            // Tenta pegar a chave que JÁ ESTÁ no computador
+            // Esta é a chave que você adicionou em Jogo.js
+            const chave1 = this.pegaFerramenta('chave-1'); 
+
+            if (chave1) {
+                // Se a chave foi encontrada, adiciona à mochila
+                this.engine.mochila.guarda(chave1);
+                console.log("Você pegou a chave-1 do computador e a guardou na mochila.");
+                
+                // IMPORTANTE: Remove a chave do inventário do computador para que não possa ser pega de novo
+                // Use o método público removeFerramenta da classe Objeto
+                // this.removeFerramenta('chave-1');
+
+                return true;
+            } else {
+                // Se a chave não foi encontrada (talvez já tenha sido pega antes)
+                console.log("O computador ligou, mas a chave-1 não está mais aqui.");
+                return false;
+            }
         } else {
             console.log("O computador não pode ser usado com esta ferramenta.");
             return false;
@@ -253,7 +270,7 @@ class LeitoEnfermaria extends Objeto {
 
 /**
  * @class Nave
- * @description O objeto principal do jogo, que agora não tem lógica de uso. A vitória é validada pela `Engine`.
+ * @description O objeto principal do jogo, precisa do star tracker. A vitória é validada pela `Engine`.
  * @augments Objeto
  */
 class Nave extends Objeto {
@@ -269,14 +286,20 @@ class Nave extends Objeto {
     }
     /**
      * @method usar
-     * @description Tenta usar uma ferramenta na nave.
+     * @description Tenta usar uma ferramenta no armário.
      * @param {Ferramenta} ferramenta - A ferramenta a ser usada.
-     * @returns {boolean} Sempre retorna false.
+     * @returns {boolean} True se a ação for bem-sucedida, false caso contrário.
      */
     usar(ferramenta) {
         validate(ferramenta, "Ferramenta");
-        console.log("A ferramenta não funciona aqui.");
-        return false;
+
+        if (ferramenta.nome == 'star-tracker') {
+            console.log("Você usou o Star Tracker para reparar a nave. Parabéns, você venceu!");
+            return true;
+        } else {
+           console.log("Esta ferramenta não funciona para consertar a nave.");
+           return false;
+        }
     }
 }
 
