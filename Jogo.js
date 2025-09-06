@@ -1,6 +1,6 @@
 import { Engine, Sala, Mochila, Objeto, Ferramenta } from './Basicas.js';
 import { CilindroOxigenio, Chave1, Chave2, StarTracker, CartaoAcesso, CaboEnergia, LaserCutter, KitFerramentas, Lanterna } from './Ferramentas.js';
-import { ArmarioTrancado, ArmarioDestrancado, CaixaLacrada, Computador, TerminalReator, Estufa, LeitoEnfermaria } from './Objetos.js';
+import { Nave, ArmarioTrancado, ArmarioDestrancado, CaixaLacrada, Computador, TerminalReator, Estufa, LeitoEnfermaria } from './Objetos.js';
 import { Hangar, LaboratorioPesquisa, EstufaHidroponica, Dormitorios, SalaDeControle, Armazem, Enfermaria, ReatorPrincipal, CamaraDeSuprimentos } from './Salas.js';
 
 /**
@@ -53,7 +53,7 @@ class Jogo extends Engine {
         enfermaria.criaPorta("oeste", reator, false);
 
         // Coloca ferramentas e objetos nas salas
-        hangar.addObjeto(new Objeto('nave', 'Sua nave danificada. Você precisa do Star Tracker para repará-la.', this));
+        hangar.addObjeto(new Nave('nave', 'Sua nave danificada. Você precisa do Star Tracker para repará-la.', this));
         hangar.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
 
         armazem.addObjeto(new CaixaLacrada('caixa-lacrada', 'Uma caixa de suprimentos lacrada.', this));
