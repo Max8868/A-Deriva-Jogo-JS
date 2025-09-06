@@ -1,4 +1,4 @@
-# Instruções para Executar o Jogo RPG
+# Instruções para Executar o Jogo RPG A Deriva
 
 Este jogo foi desenvolvido em JavaScript. Siga os passos abaixo para instalar os pacotes necessários e executar o jogo.
 
@@ -41,6 +41,7 @@ ir leste
 usar chave-1 armario-trancado
 ir leste
 ir sul
+usar star-tracker nave
 ```
 
 ## Observações
