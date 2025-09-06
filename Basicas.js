@@ -1,6 +1,6 @@
 import { validate, typedef } from "bycontract";
 import promptsync from 'prompt-sync';
-const prompt = promptsync({sigint: true});
+const prompt = promptsync({ sigint: true });
 
 // ---------------------------------------------
 /**
@@ -10,7 +10,7 @@ const prompt = promptsync({sigint: true});
 class Ferramenta {
     #nome;
     #descricao;
-    
+
     /**
      * @constructor
      * @param {string} nome - O nome da ferramenta.
@@ -39,7 +39,7 @@ class Ferramenta {
     get descricao() {
         return this.#descricao;
     }
-    
+
     /**
      * @method usar
      * @description O método padrão para usar uma ferramenta. Subclasses podem sobrescrevê-lo.
@@ -55,14 +55,14 @@ class Ferramenta {
  * @class Mochila
  * @description Representa a mochila do jogador, onde as ferramentas são armazenadas.
  */
-class Mochila{
+class Mochila {
     #ferramentas;
 
     /**
      * @constructor
      * @description Inicializa a mochila com um array vazio.
      */
-    constructor(){
+    constructor() {
         this.#ferramentas = [];
     }
 
@@ -71,7 +71,7 @@ class Mochila{
      * @description Adiciona uma ferramenta à mochila.
      * @param {Ferramenta} ferramenta - A ferramenta a ser guardada.
      */
-    guarda(ferramenta){
+    guarda(ferramenta) {
         validate(ferramenta, "Ferramenta");
         this.#ferramentas.push(ferramenta);
     }
@@ -82,7 +82,7 @@ class Mochila{
      * @param {string} nomeFerramenta - O nome da ferramenta.
      * @returns {Ferramenta|undefined} A ferramenta encontrada ou undefined se não existir.
      */
-    pega(nomeFerramenta){
+    pega(nomeFerramenta) {
         validate(arguments, ["String"]);
         let ferramenta = this.#ferramentas.find(f => f.nome === nomeFerramenta);
         return ferramenta;
@@ -94,7 +94,7 @@ class Mochila{
      * @param {string} nomeFerramenta - O nome da ferramenta a ser verificada.
      * @returns {boolean} True se a ferramenta estiver na mochila, caso contrário, false.
      */
-    tem(nomeFerramenta){
+    tem(nomeFerramenta) {
         validate(arguments, ["String"]);
         return this.#ferramentas.some(f => f.nome === nomeFerramenta);
     }
@@ -104,7 +104,7 @@ class Mochila{
      * @description Retorna uma string com todos os nomes das ferramentas na mochila.
      * @returns {string} Uma string contendo os nomes das ferramentas, separados por vírgula.
      */
-    inventario(){
+    inventario() {
         return this.#ferramentas.map(obj => obj.nome).join(", ");
     }
 }
@@ -120,7 +120,7 @@ class Objeto {
     #ferramentas;
     #acaoOk;
     #engine;
-        
+
     /**
      * @constructor
      * @param {string} nome - O nome do objeto.
@@ -262,7 +262,7 @@ class Sala {
         validate(descricao, "String");
         this.#descricao = descricao;
     }
-    
+
     /**
      * @method criaPorta
      * @description Cria uma porta para outra sala em uma direção específica.
@@ -352,7 +352,7 @@ class Sala {
         validate(ferramenta, "Ferramenta");
         this.#ferramentas.set(ferramenta.nome, ferramenta);
     }
-    
+
     /**
      * @method addObjeto
      * @description Adiciona um objeto à sala.
@@ -440,7 +440,7 @@ class Engine {
         validate(ferramenta, "Ferramenta");
         this.#ferramentasNoCenario.set(ferramenta.nome, ferramenta);
     }
-    
+
     /**
      * @method criaCenario
      * @description Método virtual que deve ser implementado pelas subclasses para criar o mundo do jogo.
@@ -448,7 +448,7 @@ class Engine {
     criaCenario() {
         const { ArmarioTrancado, ArmarioDestrancado, CaixaLacrada, Computador, TerminalReator, Estufa, LeitoEnfermaria, Nave } = require('./Objetos.js');
         const { CilindroOxigenio, StarTracker, Lanterna, CaboEnergia, LaserCutter, KitFerramentas, Chave1, Chave2, CartaoAcesso } = require('./Ferramentas.js');
-    
+
         const hangar = new Sala("Hangar", this);
         hangar.setDescricao("Você está no Hangar. O ponto de início da sua jornada.");
         const laboratorio = new Sala("Laboratório de Pesquisa", this);
@@ -469,7 +469,7 @@ class Engine {
         armazem.setDescricao("Você está no Armazém. Há uma caixa lacrada.");
         const salaReator = new Sala("Sala do Reator", this);
         salaReator.setDescricao("Você está na Sala do Reator. O cheiro de ozônio é forte aqui.");
-    
+
         hangar.criaPorta("norte", laboratorio, false);
         hangar.criaPorta("leste", dormitorio, false);
         laboratorio.criaPorta("norte", salaControle, false);
@@ -491,7 +491,7 @@ class Engine {
         armazem.criaPorta("norte", estufa, false);
         armazem.criaPorta("sul", salaReator, false);
         salaReator.criaPorta("norte", armazem, false);
-        
+
         const cilindro = new CilindroOxigenio("cilindro", "Um cilindro de oxigênio.");
         const starTracker = new StarTracker("star-tracker", "O Star Tracker, necessário para consertar a nave.");
         const lanterna = new Lanterna("lanterna", "Uma lanterna comum.");
@@ -501,7 +501,7 @@ class Engine {
         const chave1 = new Chave1("chave-1", "Uma chave estranha com o número 1.");
         const chave2 = new Chave2("chave-2", "Uma chave estranha com o número 2.");
         const cartaoAcesso = new CartaoAcesso("cartao-de-acesso", "Um cartão de acesso.");
-    
+
         const nave = new Nave("nave", "Sua nave, à deriva no espaço. Está precisando de reparos.", this);
         const armarioTrancado = new ArmarioTrancado("armario-trancado", "Um armário com uma tranca eletrônica.", this);
         armarioTrancado.addFerramenta(chave1);
@@ -509,7 +509,7 @@ class Engine {
         const computador = new Computador("computador", "Um computador antigo, precisa de um cartão de acesso.", this);
         const caixaLacrada = new CaixaLacrada("caixa-lacrada", "Uma caixa lacrada, precisa de um cortador a laser.", this);
         caixaLacrada.addFerramenta(chave2);
-    
+
         hangar.addFerramenta(cilindro);
         hangar.addObjeto(nave);
         laboratorio.addFerramenta(cartaoAcesso);
@@ -517,7 +517,7 @@ class Engine {
         salaControle.addFerramenta(lanterna);
         salaControle.addObjeto(armarioTrancado);
         armazem.addObjeto(caixaLacrada);
-        
+
         this.setSalaCorrente(hangar);
     }
 
@@ -528,15 +528,16 @@ class Engine {
     joga() {
         console.log("Bem-vindo(a) ao jogo A Deriva!");
         console.log("Digite 'ajuda' para ver os comandos.");
-        
+
         while (!this.#fim) {
             console.log("\n-------------------------");
             this.#salaCorrente.mostraDescricao();
             this.#salaCorrente.mostraPortas();
             this.#salaCorrente.mostraFerramentas();
             this.#salaCorrente.mostraObjetos();
-            
+            console.log("\n-------------------------");
             const acao = prompt("O que você deseja fazer? ").toLowerCase().split(" ");
+
             const comando = acao[0];
             const argumento = acao[1];
             const argumento2 = acao[2];
@@ -555,16 +556,31 @@ class Engine {
                     }
                     break;
                 case "usar":
-                    const ferramentaUsar = this.#mochila.pega(argumento);
-                    if (ferramentaUsar) {
-                        if (argumento2) {
-                            if (this.#salaCorrente.objetos.has(argumento2)) {
-                                this.#salaCorrente.objetos.get(argumento2).usar(ferramentaUsar);
+                    const ferramentaParaUsar = this.#mochila.pega(argumento);
+                    if (ferramentaParaUsar) {
+                        if (argumento2) { // Verifica se um objeto foi especificado para usar a ferramenta
+                            const objetoDestino = this.#salaCorrente.objetos.get(argumento2);
+                            if (objetoDestino) {
+                                const usoBemSucedido = objetoDestino.usar(ferramentaParaUsar);
+                                console.log(usoBemSucedido); // Remover este log
+
+                                // Verifica condições de vitória APÓS o uso ter sido tentado
+                                if (usoBemSucedido && ferramentaParaUsar.nome === 'star-tracker' && objetoDestino.nome === 'nave') {
+                                    console.log("\n*************************");
+                                    console.log("\nVocê conseguiu! Sua nave foi consertada, agora com os Star Tracker você pode voltar para casa!");
+                                    this.indicaFimDeJogo();
+                                    console.log("\n*************************");
+                                }
+
                             } else {
                                 console.log("Não há esse objeto aqui para usar a ferramenta.");
                             }
-                        } else {
-                            ferramentaUsar.usar();
+                        } else { // Se nenhum objeto foi especificado, tenta usar a ferramenta por si só
+                            const sucessoFerramenta = ferramentaParaUsar.usar();
+                            if (sucessoFerramenta) {
+                                // Adicione aqui lógica caso a ferramenta usada sozinha tenha um efeito especial
+                                // Por exemplo, se usar 'lanterna' sozinha ligasse a lanterna
+                            }
                         }
                     } else {
                         console.log("Você não tem essa ferramenta na mochila.");
@@ -582,10 +598,6 @@ class Engine {
                     break;
                 default:
                     console.log("Comando inválido.");
-            }
-            if (this.#salaCorrente.nome === 'Hangar' && this.#mochila.tem('star-tracker')) {
-                console.log("\nVocê conseguiu! Com o Star Tracker em mãos, você conserta a nave e foge da Deriva!");
-                this.indicaFimDeJogo();
             }
         }
     }
