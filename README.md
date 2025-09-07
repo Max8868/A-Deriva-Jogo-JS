@@ -1,4 +1,4 @@
-# Instruções para Executar o Jogo RPG
+# Instruções para Executar o Jogo RPG A Deriva
 
 Este jogo foi desenvolvido em JavaScript. Siga os passos abaixo para instalar os pacotes necessários e executar o jogo.
 
@@ -30,7 +30,10 @@ node index.js
 Utilize os comandos abaixo, na ordem apresentada, para finalizar o jogo:
 
 ```
+pegar cilindro-1
 ir norte
+usar cilindro-1
+pegar cilindro-2
 ir oeste
 ir oeste
 ir norte
@@ -41,8 +44,14 @@ ir leste
 usar chave-1 armario-trancado
 ir leste
 ir sul
+usar star-tracker nave
 ```
 
 ## Observações
 
 - Certifique-se de estar na pasta correta do projeto antes de executar os comandos.
+
+Ou acesse: [A Deriva Jogo JS](https://github.com/Max8868/A-Deriva-Jogo-JS)
+
+## Autor
+Taciano Maximo
