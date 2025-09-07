@@ -172,7 +172,6 @@ class Engine {
         if (this.#salaCorrente.o2Disponivel === 0) {
 
             const cilindro = this.#mochila.temCilindro();
-            console.log(`${cilindro}`)
 
             if (cilindro) {
                 const cilindroCheio = this.#mochila.pega(cilindro);

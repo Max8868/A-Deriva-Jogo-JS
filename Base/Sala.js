@@ -200,15 +200,11 @@ class Sala {
     sai(direcao) {
         validate(direcao, "String");
         if (this.#portas.has(direcao)) {
-            console.log(`Tentando sair da sala ${this.#nome}...`);
             const o2Destino = this.#o2Disponivel === 1.5 ? 0.5 : 0;
             this.#o2Disponivel -= 0.5;
-
             const { sala, trancada } = this.#portas.get(direcao);
             if (!trancada) {
                 sala.addO2Sala(o2Destino);
-                console.log(`Indo para ${sala.nome}...`);
-
                 this.#engine.setSalaCorrente(sala);
                 return sala;
             } else {
