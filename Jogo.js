@@ -79,16 +79,20 @@ class Jogo extends Engine {
         salaDeControle.criaPorta("oeste", estufa, false);
         enfermaria.criaPorta("oeste", reator, false);
 
+
+        // Adiciona O2 disponível no inicio do jogo
+        hangar.addO2Sala(1.5); // 1.5 salas de O2 no hangar
+
         // Coloca ferramentas e objetos nas salas
         hangar.addObjeto(new Nave('nave', 'Sua nave danificada. Você precisa do Star Tracker para repará-la.', this));
         hangar.addFerramenta(new CilindroOxigenio('cilindro-1', 'Um cilindro de oxigênio.', false));
-        hangar.addFerramenta(new CilindroOxigenio('cilindro-2', 'Um cilindro de oxigênio.', true));
 
         armazem.addObjeto(new CaixaLacrada('caixa-lacrada', 'Uma caixa de suprimentos lacrada.', this));
-        // armazem.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
+        armazem.addFerramenta(new CilindroOxigenio('cilindro-2', 'Um cilindro de oxigênio.', false));
 
         salaDeControle.addObjeto(new ArmarioTrancado('armario-trancado', 'Um armário trancado que contém o Star Tracker.', this));
         salaDeControle.addFerramenta(new Lanterna('lanterna', 'Uma lanterna com 3 usos.'));
+        salaDeControle.addFerramenta(new CilindroOxigenio('cilindro-3', 'Um cilindro de oxigênio.', true));
 
         estufa.addObjeto(new Estufa('estufa', 'A estufa da nave. Parece haver um item escondido aqui.', this));
 
@@ -105,7 +109,7 @@ class Jogo extends Engine {
         reator.addFerramenta(new LaserCutter('laser-cutter', 'Um cortador a laser com 3 usos.'));
         reator.addObjeto(new TerminalReator('terminal', 'O terminal do reator principal.', this));
         
-        // camara.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', true));
+        camara.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', true));
 
         // Coloca ferramentas em objetos
         const chave1 = new Chave('chave-1', 'Chave para a porta Laboratório -> Dormitórios.');
@@ -117,8 +121,8 @@ class Jogo extends Engine {
         const chave2 = new Chave('chave-2', 'Chave para a porta Reator -> Estufa.');
         armazem.objetos.get('caixa-lacrada').addFerramenta(chave2);
         
-        // const cilindroEscondido = new CilindroOxigenio('cilindro-escondido', 'Um cilindro de oxigênio.', false);
-        // estufa.objetos.get('estufa').addFerramenta(cilindroEscondido);
+        const cilindroEscondido = new CilindroOxigenio('cilindro-escondido', 'Um cilindro de oxigênio.', false);
+        estufa.objetos.get('estufa').addFerramenta(cilindroEscondido);
 
         this.setSalaCorrente(hangar);
     }

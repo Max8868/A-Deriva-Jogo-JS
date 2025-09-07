@@ -12,7 +12,7 @@ class Sala {
     #portas;
     #ferramentas;
     #objetos;
-
+    #o2Disponivel; // Quantidade de O2 disponível na sala
     /**
      * @constructor
      * @param {string} nome - O nome da sala.
@@ -25,6 +25,7 @@ class Sala {
         this.#portas = new Map();
         this.#ferramentas = new Map();
         this.#objetos = new Map();
+        this.#o2Disponivel = 0; // Inicializa com 0
     }
 
     /**
@@ -45,6 +46,10 @@ class Sala {
         return this.#objetos;
     }
 
+    get o2Disponivel() {
+        return this.#o2Disponivel;
+    }
+
     /**
      * @method textoDescricao
      * @description Retorna a descrição textual da sala.
@@ -52,6 +57,29 @@ class Sala {
      */
     textoDescricao() {
         return this.#descricao;
+    }
+
+    /**
+     * Adiciona uma quantidade de O2 à sala.
+     * 
+     * Valida se o valor é um número positivo e se a sala não está cheia de O2.
+     * 
+     * @param {number} valor - Quantidade de O2 a ser adicionada.
+     * @returns {boolean} Retorna true se o O2 foi adicionado com sucesso, false caso contrário.
+     */
+    addO2Sala(valor) {
+        validate(valor, "Number");
+        if (valor < 0) {
+            console.log("O valor de O2 não pode ser negativo.");
+            return false
+        } else if (this.#o2Disponivel >= 1) {
+            console.log("A sala já está com o O2 cheio.");
+            return false;
+        } else {
+            this.#o2Disponivel += valor;
+            console.log(`O2 na sala ${this.#nome} agora é ${this.#o2Disponivel}.`);
+            return true;
+        }
     }
 
     /**
@@ -172,8 +200,15 @@ class Sala {
     sai(direcao) {
         validate(direcao, "String");
         if (this.#portas.has(direcao)) {
+            console.log(`Tentando sair da sala ${this.#nome}...`);
+            const o2Destino = this.#o2Disponivel === 1.5 ? 0.5 : 0;
+            this.#o2Disponivel -= 0.5;
+
             const { sala, trancada } = this.#portas.get(direcao);
             if (!trancada) {
+                sala.addO2Sala(o2Destino);
+                console.log(`Indo para ${sala.nome}...`);
+
                 this.#engine.setSalaCorrente(sala);
                 return sala;
             } else {

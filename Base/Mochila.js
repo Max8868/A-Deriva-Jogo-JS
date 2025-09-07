@@ -1,5 +1,5 @@
 import { validate, typedef } from "bycontract";
-
+import { CilindroOxigenio } from "../Ferramentas/CilindroOxigenio.js";
 /**
  * @class Mochila
  * @description Representa a mochila do jogador, onde as ferramentas são armazenadas.
@@ -65,6 +65,16 @@ class Mochila {
     remove(ferramenta) {
         validate(ferramenta, "Ferramenta");
         this.#ferramentas = this.#ferramentas.filter(f => f.nome !== ferramenta.nome);
+    }
+
+    /**
+     * @method temCilindro
+     * @description Verifica se existe uma instância de CilindroOxigenio na mochila.
+     * @returns {string|undefined} O nome do CilindroOxigenio se encontrado, caso contrário undefined.
+     */
+    temCilindro() {
+        const cilindro = this.#ferramentas.find(f => f instanceof CilindroOxigenio);
+        return cilindro ? cilindro.nome : undefined;
     }
 }
 

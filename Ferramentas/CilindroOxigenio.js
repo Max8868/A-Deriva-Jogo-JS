@@ -8,6 +8,7 @@ import { Ferramenta } from "../Base/Ferramenta.js";
  */
 class CilindroOxigenio extends Ferramenta {
     #contaminado;
+    totalO2 = 1.5; // Total de O2 que o cilindro fornece
     /**
      * @constructor
      * @param {string} nome - O nome da ferramenta.
