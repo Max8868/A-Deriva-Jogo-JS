@@ -30,7 +30,10 @@ node index.js
 Utilize os comandos abaixo, na ordem apresentada, para finalizar o jogo:
 
 ```
+pegar cilindro-1
 ir norte
+usar cilindro-1
+pegar cilindro-2
 ir oeste
 ir oeste
 ir norte
@@ -47,3 +50,8 @@ usar star-tracker nave
 ## Observações
 
 - Certifique-se de estar na pasta correta do projeto antes de executar os comandos.
+
+Ou acesse: [A Deriva Jogo JS](https://github.com/Max8868/A-Deriva-Jogo-JS)
+
+## Autor
+Taciano Maximo

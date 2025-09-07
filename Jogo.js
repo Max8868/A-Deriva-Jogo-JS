@@ -92,7 +92,7 @@ class Jogo extends Engine {
 
         salaDeControle.addObjeto(new ArmarioTrancado('armario-trancado', 'Um armário trancado que contém o Star Tracker.', this));
         salaDeControle.addFerramenta(new Lanterna('lanterna', 'Uma lanterna com 3 usos.'));
-        salaDeControle.addFerramenta(new CilindroOxigenio('cilindro-3', 'Um cilindro de oxigênio.', true));
+        salaDeControle.addFerramenta(new CilindroOxigenio('cilindro-3', 'Um cilindro de oxigênio.', false));
 
         estufa.addObjeto(new Estufa('estufa', 'A estufa da nave. Parece haver um item escondido aqui.', this));
 
@@ -101,7 +101,7 @@ class Jogo extends Engine {
 
         dormitorios.addFerramenta(new KitFerramentas('kit-de-ferramentas', 'Um kit de ferramentas para abrir armários.'));
         dormitorios.addObjeto(new ArmarioDestrancado('armario', 'Um armário destrancado. Está vazio.', this));
-        // dormitorios.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
+        dormitorios.addFerramenta(new CilindroOxigenio('cilindro', 'Um cilindro de oxigênio.', false));
         
         enfermaria.addFerramenta(new CaboEnergia('cabo-de-energia', 'Um cabo de energia para o Reator.'));
         enfermaria.addObjeto(new LeitoEnfermaria('leito', 'Um leito de enfermaria.', this));

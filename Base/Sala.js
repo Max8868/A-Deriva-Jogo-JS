@@ -77,7 +77,6 @@ class Sala {
             return false;
         } else {
             this.#o2Disponivel += valor;
-            console.log(`O2 na sala ${this.#nome} agora é ${this.#o2Disponivel}.`);
             return true;
         }
     }
